@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
-#include <windows.h>
 
 #include "renderwindow.hpp"
 #include "entity.hpp"
@@ -132,12 +131,11 @@ int main(int argc, char* args[])
             float d = sqrt((txh-txp) * (txh-txp) + (tyh-typ) * (tyh-typ));
             if(d <= 70 && p1Turn)
             {
-                float moreSpeed = 0.5, currentSpeed = sqrt(hole.getX_sp() * hole.getX_sp() + hole.getY_sp() * hole.getY_sp());
+                float currentSpeed = sqrt(hole.getX_sp() * hole.getX_sp() + hole.getY_sp() * hole.getY_sp());
 
-                if(txh >= typ) hole.changeX_sp((txh - txp) / d + moreSpeed);
-                else hole.changeX_sp((txh - txp) / d - moreSpeed);
-                if(tyh >= typ) hole.changeY_sp(sqrt((currentSpeed + 0.7) * (currentSpeed + 0.7) - hole.getX_sp() * hole.getX_sp()));
-                else hole.changeY_sp(-sqrt((currentSpeed + 0.7) * (currentSpeed + 0.7) - hole.getX_sp() * hole.getX_sp()));
+                hole.changeX_sp((txh - txp) / d * (currentSpeed + 1));
+                if(tyh >= typ) hole.changeY_sp(sqrt((currentSpeed + 1) * (currentSpeed + 1) - hole.getX_sp() * hole.getX_sp()));
+                else hole.changeY_sp(-sqrt((currentSpeed + 1) * (currentSpeed + 1) - hole.getX_sp() * hole.getX_sp()));
 
                 ball.changeTex(hole2Texture);
                 hole.changeTex(ballTexture);
@@ -171,12 +169,11 @@ int main(int argc, char* args[])
             float d = sqrt((txh - txp) * (txh - txp) + (tyh - typ) * (tyh - typ));
             if(d <= 70 && !p1Turn)
             {
-                float moreSpeed = 0.5, currentSpeed = sqrt(ball.getX_sp() * ball.getX_sp() + ball.getY_sp() * ball.getY_sp());
+                float currentSpeed = sqrt(ball.getX_sp() * ball.getX_sp() + ball.getY_sp() * ball.getY_sp());
 
-                if(txh >= typ) ball.changeX_sp((txh - txp) / d + moreSpeed);
-                else ball.changeX_sp((txh - txp) / d - moreSpeed);
-                if(tyh >= typ) ball.changeY_sp(sqrt((currentSpeed + 0.7) * (currentSpeed + 0.7) - ball.getX_sp() * ball.getX_sp()));
-                else ball.changeY_sp(-sqrt((currentSpeed + 0.7) * (currentSpeed + 0.7) - ball.getX_sp() * ball.getX_sp()));
+                ball.changeX_sp((txh - txp) / d * (currentSpeed + 1));
+                if(tyh >= typ) ball.changeY_sp(sqrt((currentSpeed + 1) * (currentSpeed + 1) - ball.getX_sp() * ball.getX_sp()));
+                else ball.changeY_sp(-sqrt((currentSpeed + 1) * (currentSpeed + 1) - ball.getX_sp() * ball.getX_sp()));
 
                 ball.changeTex(ballTexture);
                 hole.changeTex(hole1Texture);

@@ -1,11 +1,10 @@
 # depslib dependency file v1.0
-1677754582 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\main.cpp
+1678812867 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\main.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
 	<vector>
 	<math.h>
-	<windows.h>
 	"renderwindow.hpp"
 	"entity.hpp"
 
