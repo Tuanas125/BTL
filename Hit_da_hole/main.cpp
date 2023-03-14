@@ -1,5 +1,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
 #include <iostream>
 #include <vector>
 #include <math.h>
@@ -13,7 +16,6 @@ const int Win_h = 480, Win_w = 640;
 
 int main(int argc, char* args[])
 {
-    //weapon+doi huong
     //ShowWindow(GetConsoleWindow(), SW_HIDE);
 
     int indexStand=0, time=1;
@@ -80,6 +82,15 @@ int main(int argc, char* args[])
     Entity slash1(466, 228, 120, 120, slashTexture);
     Entity slash2(466, 228, 120, 120, slashTexture);
 
+    // sfx
+    Mix_Chunk* chunk = NULL;
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
+	{
+		printf("%s", Mix_GetError());
+		return -1;
+	}
+    chunk = Mix_LoadWAV("sfx/hit.wav");
+    // catch keyboard event
     SDL_Event event;
 
     while (gameRunning)
@@ -127,6 +138,8 @@ int main(int argc, char* args[])
         }
         if(event.key.keysym.sym == SDLK_SPACE)
         {
+            if (!Mix_Playing(-1)) Mix_PlayChannel(-1, chunk, 0);
+
             float txh = hole.getX() + 12, tyh = hole.getY() + 12, txp = player1.getX() + 30, typ = player1.getY() + 30;
             float d = sqrt((txh-txp) * (txh-txp) + (tyh-typ) * (tyh-typ));
             if(d <= 70 && p1Turn)
@@ -165,6 +178,8 @@ int main(int argc, char* args[])
         }
         if(event.key.keysym.sym == SDLK_SLASH)
         {
+            if (!Mix_Playing(-1)) Mix_PlayChannel(-1, chunk, 0);
+
             float txh = ball.getX() + 12, tyh = ball.getY() + 12, txp = player2.getX() + 30, typ = player2.getY() + 30;
             float d = sqrt((txh - txp) * (txh - txp) + (tyh - typ) * (tyh - typ));
             if(d <= 70 && !p1Turn)
