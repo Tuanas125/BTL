@@ -80,6 +80,12 @@ void Entity::changeXY(float p_x, float p_y)
     this->y = p_y;
 }
 
+void Entity::changeXY_sp(float p_xsp, float p_ysp)
+{
+    this->x_sp = p_xsp;
+    this->y_sp = p_ysp;
+}
+
 void Entity::changeTex(SDL_Texture* p_tex)
 {
     this->tex = p_tex;

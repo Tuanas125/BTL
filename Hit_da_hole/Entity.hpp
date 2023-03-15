@@ -31,6 +31,7 @@ public:
     void changeX(float p_x);
     void changeY(float p_y);
     void changeXY(float p_x, float p_y);
+    void changeXY_sp(float p_xsp, float p_ysp);
     void changeTex(SDL_Texture* p_tex);
     void changeVTex(vector<SDL_Texture*> p_tex);
 

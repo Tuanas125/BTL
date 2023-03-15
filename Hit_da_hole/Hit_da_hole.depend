@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1678816012 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\main.cpp
+1678859083 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\main.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -44,7 +44,7 @@
 	"RenderWindow.hpp"
 	"Entity.hpp"
 
-1677750246 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\entity.hpp
+1678857411 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\entity.hpp
 	<iostream>
 	<vector>
 	<SDL.h>
@@ -55,7 +55,7 @@
 	<SDL_image.h>
 	"Entity.hpp"
 
-1677750226 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\entity.cpp
+1678857402 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\entity.cpp
 	"Entity.hpp"
 	"RenderWindow.hpp"
 	<iostream>
