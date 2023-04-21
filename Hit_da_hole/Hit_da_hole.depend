@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1678859083 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\main.cpp
+1678866461 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\main.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
