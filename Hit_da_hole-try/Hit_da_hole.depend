@@ -1,0 +1,99 @@
+# depslib dependency file v1.0
+1678866461 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\main.cpp
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<iostream>
+	<vector>
+	<math.h>
+	"renderwindow.hpp"
+	"entity.hpp"
+
+1677690803 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\renderwindow.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	"RenderWindow.cpp"
+	"Entity.cpp"
+
+1676645769 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\hppfiles\renderwindow.hpp
+	<SDL.h>
+	<SDL_image.h>
+	"Entity.hpp"
+
+1676645412 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\hppfiles\entity.hpp
+	<iostream>
+	<vector>
+	<SDL.h>
+	<SDL_image.h>
+
+1677691367 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\entity.cpp
+	"Entity.hpp"
+	"RenderWindow.hpp"
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+
+1676545591 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\player.cpp
+
+1677693087 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\renderwindow.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	"RenderWindow.hpp"
+	"Entity.hpp"
+
+1678857411 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\entity.hpp
+	<iostream>
+	<vector>
+	<SDL.h>
+	<SDL_image.h>
+
+1677693093 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\renderwindow.hpp
+	<SDL.h>
+	<SDL_image.h>
+	"Entity.hpp"
+
+1678857402 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\entity.cpp
+	"Entity.hpp"
+	"RenderWindow.hpp"
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+
+1676545591 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole\src\player.cpp
+
+1682160720 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\entity.cpp
+	"Entity.hpp"
+	"RenderWindow.hpp"
+
+1682159692 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\entity.hpp
+	"CommonFunc.hpp"
+
+1682152425 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\renderwindow.hpp
+	"CommonFunc.hpp"
+	"Entity.hpp"
+
+1682171573 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\main.cpp
+	"CommonFunc.hpp"
+	"renderwindow.hpp"
+	"entity.hpp"
+
+1676545591 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\player.cpp
+
+1682168566 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\renderwindow.cpp
+	"RenderWindow.hpp"
+	"Entity.hpp"
+
+1682142161 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\commonfunc.hpp
+	<iostream>
+	<windows.h>
+	<string>
+	<vector>
+	<math.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+
