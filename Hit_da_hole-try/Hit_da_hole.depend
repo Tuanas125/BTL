@@ -76,7 +76,7 @@
 	"Entity.hpp"
 	"Text.hpp"
 
-1682453214 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\main.cpp
+1682453985 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\main.cpp
 	"CommonFunc.hpp"
 	"renderwindow.hpp"
 	"entity.hpp"
@@ -98,7 +98,7 @@
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 
-1682452654 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\text.cpp
+1682453477 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\text.cpp
 	"Text.hpp"
 
 1682452953 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\text.hpp

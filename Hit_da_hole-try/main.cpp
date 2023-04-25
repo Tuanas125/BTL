@@ -20,8 +20,6 @@ Mix_Music* p_music = NULL;
 // catch keyboard event
 SDL_Event event;
 
-
-
 RenderWindow window("Hit Da Hole", SCREEN_WIDTH, SCREEN_HEIGHT);
 
 SDL_Texture* bgTexture = window.loadTexture("rec/bg.png");
@@ -242,21 +240,28 @@ int main(int argc, char* args[])
         else if(haveAWinner)
         {
             SDL_Color black = {0, 0, 0}, white = {255, 255, 255};
-            Text p1w(monster, "Player 1 wins", white, 200, 50);
-            Text p2w(monster, "Player 2 wins", white, 200, 50);
-            Text playagain(rimou, "Play Again", white, 100, 40);
-            Text targetedPG(rimou, "> Play Again <", white, 140, 40);
-            Text main_menu(rimou, "Main Menu", white, 150, 40);
-            Text targetedMM(rimou, "> Main Menu <", white, 190, 40);
+            Text p1w(monster, "Player 1 wins", white, 300, 50);
+            Text p2w(monster, "Player 2 wins", white, 300, 50);
+            Text playagain(rimou, "Play again", white, 150, 40);
+            Text targetedPG(rimou, "> Play again <", white, 190, 40);
+            Text main_menu(rimou, "Main menu", white, 150, 40);
+            Text targetedMM(rimou, "> Main menu <", white, 190, 40);
 
             if(needSfx)
             {
                 needSfx = false;
                 PlaySfx(p_chunk,"sfx/win.wav");
             }
-            if(event.key.keysym.sym == SDLK_r)
+            if(event.key.keysym.sym == SDLK_r || isFlickingButton(playagain) && event.button.clicks)
             {
                 ResetStatus();
+            }
+            if(isFlickingButton(main_menu) && event.button.clicks)
+            {
+                ResetStatus();
+                Mix_HaltMusic();
+                needMenu = true;
+                ball.changeXY_sp(-10, 10);
             }
 
             window.clear();
@@ -280,8 +285,8 @@ int main(int argc, char* args[])
         {
             SDL_Color black = {0, 0, 0}, white = {255, 255, 255};
             Text paused(monster, "PAUSED", white, 200, 50);
-            Text resume(rimou, "Resume", white, 100, 40);
-            Text targetedResume(rimou, "> Resume <", white, 140, 40);
+            Text resume(rimou, "Resume", white, 120, 40);
+            Text targetedResume(rimou, "> Resume <", white, 160, 40);
             Text main_menu(rimou, "Main Menu", white, 150, 40);
             Text targetedMM(rimou, "> Main Menu <", white, 190, 40);
 
@@ -374,8 +379,6 @@ int main(int argc, char* args[])
             if(sqrt((ball.getX() - hole.getX()) * (ball.getX() - hole.getX()) + (ball.getY() - hole.getY()) * (ball.getY() - hole.getY())) <= 24)
             {
                 haveAWinner = true;
-                if(p1Turn) cout << "p2\n";
-                else cout << "p1\n";
                 PlaySfx(p_chunk,"sfx/winbh.wav");
             }
 
@@ -384,7 +387,6 @@ int main(int argc, char* args[])
             {
                 p1Ded = true;
                 haveAWinner = true;
-                cout << "p2\n";
                 player1.changeTex(dedTexture);
                 PlaySfx(p_chunk,"sfx/lose.wav");
             }
@@ -393,7 +395,6 @@ int main(int argc, char* args[])
             {
                 haveAWinner = true;
                 p2Ded = true;
-                cout << "p1\n";
                 player2.changeTex(dedTexture);
                 PlaySfx(p_chunk,"sfx/lose.wav");
             }
