@@ -35,6 +35,8 @@
 		<Unit filename="CommonFunc.hpp" />
 		<Unit filename="Entity.hpp" />
 		<Unit filename="RenderWindow.hpp" />
+		<Unit filename="Text.cpp" />
+		<Unit filename="Text.hpp" />
 		<Unit filename="entity.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="player.cpp" />

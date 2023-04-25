@@ -85,7 +85,18 @@ void RenderWindow::render(SDL_Texture* p_tex)
 {
     render(0, 0, p_tex);
 }
+void RenderWindow::render(Text &p_text, float p_x, float p_y)
+{
+    p_text.changeTextTex(SDL_CreateTextureFromSurface(renderer, p_text.getTextSurf()));
 
+    SDL_Rect dst;
+    dst.x = p_x;
+    dst.y = p_y;
+    dst.w = p_text.getTextRect().w;
+    dst.h = p_text.getTextRect().h;
+
+    SDL_RenderCopy(renderer, p_text.getTextTex(), NULL, &dst);
+}
 void RenderWindow::display()
 {
     SDL_RenderPresent(renderer);

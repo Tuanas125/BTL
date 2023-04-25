@@ -3,15 +3,18 @@
 #include "renderwindow.hpp"
 #include "entity.hpp"
 
+bool needMenu = true;
+bool customizeMap = false;
 bool haveAWinner = false;
 bool p1Turn = true;
 bool p1Ded = false;
 bool p2Ded = false;
 bool needSfx = true;
 
-int timer=1;
+int timer = 1;
 
 Mix_Chunk* p_chunk = NULL;
+Mix_Music* p_music = NULL;
 // catch keyboard event
 SDL_Event event;
 
@@ -58,7 +61,7 @@ vector <SDL_Texture*> slashTexture =
     window.loadTexture("rec/slash/1.png")
 };
 
-Entity ball(SCREEN_WIDTH / 2 - 12, SCREEN_HEIGHT / 2, 24, 24, 0, 1, ballTexture);
+Entity ball(SCREEN_WIDTH / 2 - 12, SCREEN_HEIGHT / 2, 24, 24, -10, 10, ballTexture);
 Entity hole(SCREEN_WIDTH / 2 - 12, SCREEN_HEIGHT / 2 - 40, 24, 24, 0, -1, hole1Texture);
 Entity player1(SCREEN_WIDTH / 3 - 30, SCREEN_HEIGHT / 2 - 24, 60, 60, player1ITexture);
 Entity player2(SCREEN_WIDTH / 3 * 2 - 30, SCREEN_HEIGHT / 2 - 24, 60, 60, player2ITexture);
@@ -72,13 +75,27 @@ void ResetStatus()
     p1Ded = false;
     p2Ded = false;
     needSfx = true;
+    Mix_HaltMusic();
+    ball.changeXY(SCREEN_WIDTH / 2 - 12, SCREEN_HEIGHT / 2);
+    ball.changeXY_sp(0, 1);
+    ball.changeTex(ballTexture);
+    hole.changeXY(SCREEN_WIDTH / 2 - 12, SCREEN_HEIGHT / 2 - 40);
+    hole.changeXY_sp(0, -1);
+    hole.changeTex(hole1Texture);
+    player1.changeXY(SCREEN_WIDTH / 3 - 30, SCREEN_HEIGHT / 2 - 24);
+    player2.changeXY(SCREEN_WIDTH / 3 * 2 - 30, SCREEN_HEIGHT / 2 - 24);
 }
 void PlaySfx(Mix_Chunk* p_chunk, const char* p_filePath)
 {
     p_chunk = Mix_LoadWAV(p_filePath);
     Mix_PlayChannel(-1, p_chunk, 0);
 }
-void MovingOfBH()
+void PlayMusic(Mix_Music* p_music, const char* p_filePath)
+{
+    p_music = Mix_LoadMUS(p_filePath);
+    Mix_PlayMusic(p_music, -1);
+}
+void BallMovement()
 {
     if(ball.getX() <= 0 || ball.getX() >= SCREEN_WIDTH - 12)
     {
@@ -91,7 +108,9 @@ void MovingOfBH()
         PlaySfx(p_chunk,"sfx/bounce.wav");
     }
     ball.moving(ball.getX_sp(), ball.getY_sp());
-
+}
+void HoleMovement()
+{
     if(hole.getX() <= 0 || hole.getX() >= SCREEN_WIDTH - 12)
     {
         hole.changeX_sp(hole.getX_sp() * -1);
@@ -115,7 +134,7 @@ void Auto()
         slash1.changeIndex(slash1.getIndex() + 1);
         slash2.changeIndex(slash2.getIndex() + 1);
     }
-    if(timer == 100) timer = 0;
+    if(timer == 1000) timer = 0;
     timer++;
 }
 void Animation(Entity &player, vector<SDL_Texture*> p_vtex, float p_x, float p_y, SDL_RendererFlip p_flip)
@@ -164,6 +183,7 @@ int main(int argc, char* args[])
     while (gameRunning)
     {
         SDL_Delay(10);
+        TTF_Init();
         Auto();
         SDL_PollEvent(&event);
         const Uint8* keystates = SDL_GetKeyboardState(NULL);
@@ -173,9 +193,33 @@ int main(int argc, char* args[])
             //ShowWindow(GetConsoleWindow(), SW_SHOW);
             gameRunning = false;
         }
+        if(needMenu)
+        {
+            if(!Mix_PlayingMusic()) PlayMusic(p_music, "sfx/bgmusic/showurmove.mp3");
+            SDL_Color black = {0, 0, 0}, white = {255, 255, 255};
+            Text gameName1("font/Crackman back.otf", 100, "Hit da hole", black, 400, 130);
+            Text gameName2("font/Crackman front.otf", 100, "Hit da hole", white, 400, 130);
+            SDL_Color guiColor;
+            if(timer % 40 == 0) guiColor = black;
+            if(timer % 80 == 0) guiColor = white;
+            Text guide("font/nasalization-rg.otf", 70, "Press space to start the game", guiColor, 400, 50);
 
+            if (event.key.keysym.sym == SDLK_SPACE)
+            {
+                needMenu = false;
+                ResetStatus();
+            }
+            BallMovement();
+
+            window.render(bgTexture);
+            window.render(ball);
+            window.render(gameName1, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - gameName1.getHeight() + 30);
+            window.render(gameName2, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - gameName2.getHeight() + 30);
+            window.render(guide, SCREEN_WIDTH / 2 - guide.getWidth() / 2, SCREEN_HEIGHT - guide.getHeight() - 50);
+            window.display();
+        }
         //endgame and restart
-        if(haveAWinner)
+        else if(haveAWinner)
         {
             if(needSfx)
             {
@@ -185,19 +229,12 @@ int main(int argc, char* args[])
             if(event.key.keysym.sym == SDLK_r)
             {
                 ResetStatus();
-                ball.changeXY(SCREEN_WIDTH / 2 - 12, SCREEN_HEIGHT / 2);
-                ball.changeXY_sp(0, 1);
-                ball.changeTex(ballTexture);
-                hole.changeXY(SCREEN_WIDTH / 2 - 12, SCREEN_HEIGHT / 2 - 40);
-                hole.changeXY_sp(0, -1);
-                hole.changeTex(hole1Texture);
-                player1.changeXY(SCREEN_WIDTH / 3 - 30, SCREEN_HEIGHT / 2 - 24);
-                player2.changeXY(SCREEN_WIDTH / 3 * 2 - 30, SCREEN_HEIGHT / 2 - 24);
             }
         }
         else
         {
-            MovingOfBH();
+            BallMovement();
+            HoleMovement();
 
             // p1 controller
             if(keystates[SDL_SCANCODE_D] && player1.getX() <= SCREEN_WIDTH - 60)
@@ -299,6 +336,7 @@ int main(int argc, char* args[])
     }
 
     window.cleanUp();
+    TTF_Quit();
     SDL_Quit();
     return 0;
 }
