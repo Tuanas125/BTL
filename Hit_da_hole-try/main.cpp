@@ -214,7 +214,7 @@ int main(int argc, char* args[])
             SDL_Color guiColor;
             if(timer % 40 == 0) guiColor = black;
             if(timer % 80 == 0) guiColor = white;
-            Text guide(nasa, "Press space to start the game", guiColor, 400, 50);
+            Text guide(nasa, "Press [space] to start the game", guiColor, 480, 40);
 
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
@@ -246,6 +246,7 @@ int main(int argc, char* args[])
             Text targetedPG(rimou, "> Play again <", white, 190, 40);
             Text main_menu(rimou, "Main menu", white, 150, 40);
             Text targetedMM(rimou, "> Main menu <", white, 190, 40);
+            Text tip(nasa, "Press [R] key to restart quickly", white, 450, 28);
 
             if(needSfx)
             {
@@ -279,6 +280,7 @@ int main(int argc, char* args[])
                 else window.render(playagain, SCREEN_WIDTH / 2 - playagain.getWidth() / 2, SCREEN_HEIGHT / 2);
             if(isFlickingButton(main_menu)) window.render(targetedMM, SCREEN_WIDTH / 2 - targetedMM.getWidth() / 2, SCREEN_HEIGHT / 2 + 60);
                 else window.render(main_menu, SCREEN_WIDTH / 2 - main_menu.getWidth() / 2, SCREEN_HEIGHT / 2 + 60);
+            window.render(tip, SCREEN_WIDTH / 2 - tip.getWidth() / 2, SCREEN_HEIGHT - tip.getHeight() - 10);
             window.display();
         }
         else if(pause)
