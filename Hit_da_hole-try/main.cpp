@@ -20,6 +20,8 @@ Mix_Music* p_music = NULL;
 // catch keyboard event
 SDL_Event event;
 
+
+
 RenderWindow window("Hit Da Hole", SCREEN_WIDTH, SCREEN_HEIGHT);
 
 SDL_Texture* bgTexture = window.loadTexture("rec/bg.png");
@@ -182,6 +184,12 @@ bool isFlickingButton(Text &text)
 int main(int argc, char* args[])
 {
     TTF_Init();
+    TTF_Font *crackmanB = TTF_OpenFont("font/Crackman back.ttf", 100);
+    TTF_Font *crackmanF = TTF_OpenFont("font/Crackman front.ttf", 100);
+    TTF_Font *nasa = TTF_OpenFont("font/nasalization-rg.ttf", 70);
+    TTF_Font *monster = TTF_OpenFont("font/MonsterBitesItalic-1Gy52.ttf", 150);
+    TTF_Font *rimou = TTF_OpenFont("font/rimouski sb.ttf", 100);
+
     //ShowWindow(GetConsoleWindow(), SW_HIDE);
     bool gameRunning = true;
     // sfx
@@ -203,12 +211,12 @@ int main(int argc, char* args[])
         {
             if(!Mix_PlayingMusic()) PlayMusic(p_music, "sfx/bgmusic/showurmove.mp3");
             SDL_Color black = {0, 0, 0}, white = {255, 255, 255};
-            Text gameName1("font/Crackman back.otf", 100, "Hit da hole", black, 400, 130);
-            Text gameName2("font/Crackman front.otf", 100, "Hit da hole", white, 400, 130);
+            Text gameName1(crackmanB, "Hit da hole", black, 400, 130);
+            Text gameName2(crackmanF, "Hit da hole", white, 400, 130);
             SDL_Color guiColor;
             if(timer % 40 == 0) guiColor = black;
             if(timer % 80 == 0) guiColor = white;
-            Text guide("font/nasalization-rg.otf", 70, "Press space to start the game", guiColor, 400, 50);
+            Text guide(nasa, "Press space to start the game", guiColor, 400, 50);
 
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
@@ -234,12 +242,12 @@ int main(int argc, char* args[])
         else if(haveAWinner)
         {
             SDL_Color black = {0, 0, 0}, white = {255, 255, 255};
-            Text p1w("font/MonsterBitesItalic-1Gy52.ttf", 150, "Player 1 wins", white, 200, 50);
-            Text p2w("font/MonsterBitesItalic-1Gy52.ttf", 150, "Player 2 wins", white, 200, 50);
-            Text playagain("font/rimouski sb.otf", 100, "Play Again", white, 100, 40);
-            Text targetedPG("font/rimouski sb.otf", 100, "> Play Again <", white, 140, 40);
-            Text main_menu("font/rimouski sb.otf", 100, "Main Menu", white, 150, 40);
-            Text targetedMM("font/rimouski sb.otf", 100, "> Main Menu <", white, 190, 40);
+            Text p1w(monster, "Player 1 wins", white, 200, 50);
+            Text p2w(monster, "Player 2 wins", white, 200, 50);
+            Text playagain(rimou, "Play Again", white, 100, 40);
+            Text targetedPG(rimou, "> Play Again <", white, 140, 40);
+            Text main_menu(rimou, "Main Menu", white, 150, 40);
+            Text targetedMM(rimou, "> Main Menu <", white, 190, 40);
 
             if(needSfx)
             {
@@ -271,11 +279,11 @@ int main(int argc, char* args[])
         else if(pause)
         {
             SDL_Color black = {0, 0, 0}, white = {255, 255, 255};
-            Text paused("font/MonsterBitesItalic-1Gy52.ttf", 150, "PAUSED", white, 200, 50);
-            Text resume("font/rimouski sb.otf", 100, "Resume", white, 100, 40);
-            Text targetedResume("font/rimouski sb.otf", 100, "> Resume <", white, 140, 40);
-            Text main_menu("font/rimouski sb.otf", 100, "Main Menu", white, 150, 40);
-            Text targetedMM("font/rimouski sb.otf", 100, "> Main Menu <", white, 190, 40);
+            Text paused(monster, "PAUSED", white, 200, 50);
+            Text resume(rimou, "Resume", white, 100, 40);
+            Text targetedResume(rimou, "> Resume <", white, 140, 40);
+            Text main_menu(rimou, "Main Menu", white, 150, 40);
+            Text targetedMM(rimou, "> Main Menu <", white, 190, 40);
 
             if(event.button.clicks)
             {

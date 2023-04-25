@@ -76,14 +76,14 @@
 	"Entity.hpp"
 	"Text.hpp"
 
-1682448125 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\main.cpp
+1682453214 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\main.cpp
 	"CommonFunc.hpp"
 	"renderwindow.hpp"
 	"entity.hpp"
 
 1676545591 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\player.cpp
 
-1682447987 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\renderwindow.cpp
+1682452562 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\renderwindow.cpp
 	"RenderWindow.hpp"
 	"Entity.hpp"
 
@@ -98,9 +98,9 @@
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 
-1682447686 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\text.cpp
+1682452654 source:f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\text.cpp
 	"Text.hpp"
 
-1682448020 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\text.hpp
+1682452953 f:\college_study\2nd_semester\advance_programming\btl\hit_da_hole-try\text.hpp
 	"CommonFunc.hpp"
 
