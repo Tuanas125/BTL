@@ -5,6 +5,7 @@
 
 bool needMenu = true;
 bool customizeMap = false;
+bool pause = false;
 bool haveAWinner = false;
 bool p1Turn = true;
 bool p1Ded = false;
@@ -12,6 +13,7 @@ bool p2Ded = false;
 bool needSfx = true;
 
 int timer = 1;
+int xMouse, yMouse;
 
 Mix_Chunk* p_chunk = NULL;
 Mix_Music* p_music = NULL;
@@ -75,7 +77,7 @@ void ResetStatus()
     p1Ded = false;
     p2Ded = false;
     needSfx = true;
-    Mix_HaltMusic();
+    pause = false;
     ball.changeXY(SCREEN_WIDTH / 2 - 12, SCREEN_HEIGHT / 2);
     ball.changeXY_sp(0, 1);
     ball.changeTex(ballTexture);
@@ -97,12 +99,12 @@ void PlayMusic(Mix_Music* p_music, const char* p_filePath)
 }
 void BallMovement()
 {
-    if(ball.getX() <= 0 || ball.getX() >= SCREEN_WIDTH - 12)
+    if(ball.getX() <= 0 || ball.getX() + 20 >= SCREEN_WIDTH)
     {
         ball.changeX_sp(ball.getX_sp() * -1);
         PlaySfx(p_chunk,"sfx/bounce.wav");
     }
-    if(ball.getY() <= 0 || ball.getY() >= SCREEN_HEIGHT - 12)
+    if(ball.getY() <= 0 || ball.getY() + 20 >= SCREEN_HEIGHT)
     {
         ball.changeY_sp(ball.getY_sp() * -1);
         PlaySfx(p_chunk,"sfx/bounce.wav");
@@ -111,12 +113,12 @@ void BallMovement()
 }
 void HoleMovement()
 {
-    if(hole.getX() <= 0 || hole.getX() >= SCREEN_WIDTH - 12)
+    if(hole.getX() <= 0 || hole.getX() + 20 >= SCREEN_WIDTH)
     {
         hole.changeX_sp(hole.getX_sp() * -1);
         PlaySfx(p_chunk,"sfx/bounce.wav");
     }
-    if(hole.getY() <= 0 || hole.getY() >= SCREEN_HEIGHT - 12)
+    if(hole.getY() <= 0 || hole.getY() + 20 >= SCREEN_HEIGHT)
     {
         hole.changeY_sp(hole.getY_sp() * -1);
         PlaySfx(p_chunk,"sfx/bounce.wav");
@@ -171,24 +173,28 @@ void Hit(Entity &player, Entity &obj1, Entity &obj2, SDL_KeyCode key)
         p1Turn = !p1Turn;
     }
 }
-
+bool isFlickingButton(Text &text)
+{
+    if(event.motion.x || event.motion.y) xMouse = event.motion.x, yMouse = event.motion.y;
+    return (xMouse >= text.getX() && xMouse <= text.getX() + text.getWidth() &&
+        yMouse >= text.getY() && yMouse <= text.getY() + text.getHeight());
+}
 int main(int argc, char* args[])
 {
+    TTF_Init();
     //ShowWindow(GetConsoleWindow(), SW_HIDE);
     bool gameRunning = true;
-
     // sfx
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1) printf("%s", Mix_GetError());
 
     while (gameRunning)
     {
         SDL_Delay(10);
-        TTF_Init();
         Auto();
         SDL_PollEvent(&event);
         const Uint8* keystates = SDL_GetKeyboardState(NULL);
 
-        if (event.key.keysym.sym == SDLK_ESCAPE || event.type == SDL_QUIT)
+        if (event.type == SDL_QUIT)
         {
             //ShowWindow(GetConsoleWindow(), SW_SHOW);
             gameRunning = false;
@@ -204,23 +210,37 @@ int main(int argc, char* args[])
             if(timer % 80 == 0) guiColor = white;
             Text guide("font/nasalization-rg.otf", 70, "Press space to start the game", guiColor, 400, 50);
 
+            if (event.key.keysym.sym == SDLK_ESCAPE)
+            {
+                gameRunning = false;
+            }
             if (event.key.keysym.sym == SDLK_SPACE)
             {
                 needMenu = false;
+                Mix_HaltMusic();
                 ResetStatus();
             }
             BallMovement();
 
+            window.clear();
             window.render(bgTexture);
             window.render(ball);
-            window.render(gameName1, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - gameName1.getHeight() + 30);
-            window.render(gameName2, SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 - gameName2.getHeight() + 30);
+            window.render(gameName1, SCREEN_WIDTH / 2 - gameName1.getWidth() / 2, SCREEN_HEIGHT / 2 - gameName1.getHeight() + 30);
+            window.render(gameName2, SCREEN_WIDTH / 2 - gameName2.getWidth() / 2, SCREEN_HEIGHT / 2 - gameName2.getHeight() + 30);
             window.render(guide, SCREEN_WIDTH / 2 - guide.getWidth() / 2, SCREEN_HEIGHT - guide.getHeight() - 50);
             window.display();
         }
         //endgame and restart
         else if(haveAWinner)
         {
+            SDL_Color black = {0, 0, 0}, white = {255, 255, 255};
+            Text p1w("font/MonsterBitesItalic-1Gy52.ttf", 150, "Player 1 wins", white, 200, 50);
+            Text p2w("font/MonsterBitesItalic-1Gy52.ttf", 150, "Player 2 wins", white, 200, 50);
+            Text playagain("font/rimouski sb.otf", 100, "Play Again", white, 100, 40);
+            Text targetedPG("font/rimouski sb.otf", 100, "> Play Again <", white, 140, 40);
+            Text main_menu("font/rimouski sb.otf", 100, "Main Menu", white, 150, 40);
+            Text targetedMM("font/rimouski sb.otf", 100, "> Main Menu <", white, 190, 40);
+
             if(needSfx)
             {
                 needSfx = false;
@@ -230,9 +250,71 @@ int main(int argc, char* args[])
             {
                 ResetStatus();
             }
+
+            window.clear();
+            window.render(bgTexture);
+            window.render(hole);
+            window.render(ball);
+            if(!p1Ded) window.render(player1, player1.getIndex());
+                else window.render(player1);
+            if(!p2Ded) window.render(player2, player1.getIndex());
+                else window.render(player2);
+
+            if(!p1Turn) window.render(p1w, SCREEN_WIDTH / 2 - p1w.getWidth() / 2, p1w.getHeight() + 40);
+                else window.render(p2w, SCREEN_WIDTH / 2 - p2w.getWidth() / 2, p2w.getHeight() + 40);
+            if(isFlickingButton(playagain))window.render(targetedPG, SCREEN_WIDTH / 2 - targetedPG.getWidth() / 2, SCREEN_HEIGHT / 2);
+                else window.render(playagain, SCREEN_WIDTH / 2 - playagain.getWidth() / 2, SCREEN_HEIGHT / 2);
+            if(isFlickingButton(main_menu)) window.render(targetedMM, SCREEN_WIDTH / 2 - targetedMM.getWidth() / 2, SCREEN_HEIGHT / 2 + 60);
+                else window.render(main_menu, SCREEN_WIDTH / 2 - main_menu.getWidth() / 2, SCREEN_HEIGHT / 2 + 60);
+            window.display();
+        }
+        else if(pause)
+        {
+            SDL_Color black = {0, 0, 0}, white = {255, 255, 255};
+            Text paused("font/MonsterBitesItalic-1Gy52.ttf", 150, "PAUSED", white, 200, 50);
+            Text resume("font/rimouski sb.otf", 100, "Resume", white, 100, 40);
+            Text targetedResume("font/rimouski sb.otf", 100, "> Resume <", white, 140, 40);
+            Text main_menu("font/rimouski sb.otf", 100, "Main Menu", white, 150, 40);
+            Text targetedMM("font/rimouski sb.otf", 100, "> Main Menu <", white, 190, 40);
+
+            if(event.button.clicks)
+            {
+                if (isFlickingButton(resume))
+                {
+                    pause = false;
+                }
+                if (isFlickingButton(main_menu))
+                {
+                    ResetStatus();
+                    needMenu = true;
+                    Mix_HaltMusic();
+                    ball.changeXY_sp(-10, 10);
+                }
+            }
+
+            window.clear();
+            window.render(bgTexture);
+            window.render(hole);
+            window.render(ball);
+            if(!p1Ded) window.render(player1, player1.getIndex());
+                else window.render(player1);
+            if(!p2Ded) window.render(player2, player1.getIndex());
+                else window.render(player2);
+
+            window.render(paused, SCREEN_WIDTH / 2 - paused.getWidth() / 2, paused.getHeight() + 40);
+            if(isFlickingButton(resume))window.render(targetedResume, SCREEN_WIDTH / 2 - targetedResume.getWidth() / 2, SCREEN_HEIGHT / 2);
+                else window.render(resume, SCREEN_WIDTH / 2 - resume.getWidth() / 2, SCREEN_HEIGHT / 2);
+            if(isFlickingButton(main_menu)) window.render(targetedMM, SCREEN_WIDTH / 2 - targetedMM.getWidth() / 2, SCREEN_HEIGHT / 2 + 60);
+                else window.render(main_menu, SCREEN_WIDTH / 2 - main_menu.getWidth() / 2, SCREEN_HEIGHT / 2 + 60);
+            window.display();
         }
         else
         {
+            if(!Mix_PlayingMusic())
+            {
+                PlayMusic(p_music, "sfx/bgmusic/Battle BGM.mp3");
+                Mix_VolumeMusic(50);
+            }
             BallMovement();
             HoleMovement();
 
@@ -247,11 +329,11 @@ int main(int argc, char* args[])
             }
             if(keystates[SDL_SCANCODE_S] && player1.getY() <= SCREEN_HEIGHT - 60)
             {
-                Animation(player1, player1WTexture, player1.getX(), player1.getY() + 4, SDL_FLIP_NONE);
+                Animation(player1, player1WTexture, player1.getX(), player1.getY() + 4, player1.getFlip());
             }
             if(keystates[SDL_SCANCODE_W] && player1.getY() >= 0)
             {
-                Animation(player1, player1WTexture, player1.getX(), player1.getY() - 4, SDL_FLIP_NONE);
+                Animation(player1, player1WTexture, player1.getX(), player1.getY() - 4, player1.getFlip());
             }
             if(event.key.keysym.sym == SDLK_SPACE)
             {
@@ -269,11 +351,11 @@ int main(int argc, char* args[])
             }
             if(keystates[SDL_SCANCODE_K] && player2.getY() <= SCREEN_HEIGHT - 60)
             {
-                Animation(player2, player2WTexture, player2.getX(), player2.getY() + 4, SDL_FLIP_NONE);
+                Animation(player2, player2WTexture, player2.getX(), player2.getY() + 4, player2.getFlip());
             }
             if(keystates[SDL_SCANCODE_I] && player2.getY() >= 0)
             {
-                Animation(player2, player2WTexture, player2.getX(), player2.getY() - 4, SDL_FLIP_NONE);
+                Animation(player2, player2WTexture, player2.getX(), player2.getY() - 4, player2.getFlip());
             }
             if(event.key.keysym.sym == SDLK_SLASH)
             {
@@ -306,6 +388,11 @@ int main(int argc, char* args[])
                 cout << "p1\n";
                 player2.changeTex(dedTexture);
                 PlaySfx(p_chunk,"sfx/lose.wav");
+            }
+
+            if (event.key.keysym.sym == SDLK_ESCAPE)
+            {
+                pause = true;
             }
 
             //render

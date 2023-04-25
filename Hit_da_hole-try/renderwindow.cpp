@@ -88,6 +88,7 @@ void RenderWindow::render(SDL_Texture* p_tex)
 void RenderWindow::render(Text &p_text, float p_x, float p_y)
 {
     p_text.changeTextTex(SDL_CreateTextureFromSurface(renderer, p_text.getTextSurf()));
+    p_text.changeTextX(p_x); p_text.changeTextY(p_y);
 
     SDL_Rect dst;
     dst.x = p_x;
@@ -105,4 +106,9 @@ void RenderWindow::display()
 void RenderWindow::cleanUp()
 {
     SDL_DestroyWindow(window);
+}
+
+SDL_Renderer *RenderWindow::getScreen()
+{
+    return renderer;
 }

@@ -127,7 +127,6 @@ SDL_Texture* Entity::getVTex(int p_index)
     return vtex[p_index];
 }
 
-
 SDL_Rect Entity::getCurrentFrame()
 {
     return currentFrame;

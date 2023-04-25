@@ -19,4 +19,6 @@ public:
     void render(Text &p_text, float p_x, float p_y);
     void display();
     void cleanUp();
+
+    SDL_Renderer* getScreen();
 };
