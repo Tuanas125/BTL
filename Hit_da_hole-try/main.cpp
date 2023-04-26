@@ -4,7 +4,6 @@
 #include "entity.hpp"
 
 bool needMenu = true;
-bool customizeMap = false;
 bool pause = false;
 bool haveAWinner = false;
 bool p1Turn = true;
@@ -188,7 +187,7 @@ int main(int argc, char* args[])
     TTF_Font *monster = TTF_OpenFont("font/MonsterBitesItalic-1Gy52.ttf", 150);
     TTF_Font *rimou = TTF_OpenFont("font/rimouski sb.ttf", 100);
 
-    //ShowWindow(GetConsoleWindow(), SW_HIDE);
+    ShowWindow(GetConsoleWindow(), SW_HIDE);
     bool gameRunning = true;
     // sfx
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1) printf("%s", Mix_GetError());
